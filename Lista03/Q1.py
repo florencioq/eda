@@ -29,6 +29,18 @@ class HashTable:
             else:
                 print(str(self._tabela[i]._chave) + " "+ str( self._tabela[i]._valor))
 
+    def getitem(self, k):
+        j = self._funcao_hash(k)
+        if self._tabela[j]._chave == k:
+            return self._tabela[j]._valor
+        else:
+            while self._tabela[j]._chave != k and j < self.tamanho():
+                j += 1
+            if self._tabela[j]._chave == k:
+                return self._tabela[j]._valor
+            else:
+                return None
+
     def setitem(self, k, num):
         j = self._funcao_hash(k)
         elemento = self._Elemento(k, num)
