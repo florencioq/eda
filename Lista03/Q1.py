@@ -7,7 +7,9 @@ class HashTable:
         self._n = 0
         self._primo = 109345121
         self._a = 1 + randrange(self._primo - 1)
+        self._a = 87924234
         self._b = randrange(self._primo)
+        self._b = 44287322
         self.colisoes = 0
 
     class _Elemento:
@@ -34,12 +36,14 @@ class HashTable:
         if self._tabela[j]._chave == k:
             return self._tabela[j]._valor
         else:
-            while self._tabela[j]._chave != k and j < self.tamanho():
+            while self._tabela[j]._chave != k:
                 j += 1
-            if self._tabela[j]._chave == k:
-                return self._tabela[j]._valor
-            else:
+                if j == self.tamanho():
+                    break
+            if j == self.tamanho():
                 return None
+            else:
+                return self._tabela[j]._valor
 
     def setitem(self, k, num):
         j = self._funcao_hash(k)
@@ -80,4 +84,7 @@ if __name__ == '__main__':
         print("------------")
         myHashTable._printHash()
     print("=================")
-    print(myHashTable.colisoes)
+    for i in range(1,n+1):
+        retorno = myHashTable.getitem(i)
+        if retorno != None:
+            print(str(i)+"-"+str(retorno))
