@@ -1,8 +1,10 @@
 from random import *
+import copy
+
 
 class HashTable:
     class _Bucket:
-        def __init__(self, tamanho=20):
+        def __init__(self, tamanho):
             self._tabela = tamanho * [None]
 
     def __init__(self, tambucket=10):
@@ -91,15 +93,16 @@ class HashTable:
         else:
             return False
 
-    def setitem(self, k, num):
-        kj = self._funcao_hash(k)  # hash
+    def setitem(self, chave, num):
+
+        kj = self._funcao_hash(chave)  # hash
         d = self.profundidade()  # profundidade em bits
         r = kj & pow(2, d) - 1  # reduzindo a chave ao numero bits da profundidade
         bucket = self.dicionario[r]  # encontrar o ponteiro pro bucket
         kkj = kj >> d  # retiro os bits de indexação para usar o restante para fazer hash no bucket
 
         # de posse de bucket vamos preenche-lo
-        elemento = self._Elemento(k, num)
+        elemento = self._Elemento(chave, num)
         kkjj = kkj
         if bucket._tabela[kkjj] == None:
             bucket._tabela[kkjj] = elemento
@@ -120,10 +123,30 @@ class HashTable:
                 bucket._tabela[kkjj] = elemento
                 hashCheio = False
         if hashCheio:
-            self.dicionario = self.ampliadict()  ## Ampliar 1 bit no dictionary
-            return False
+            ## bucketCorrente = bucket
+            ## Contar quantas posições do dicionário apontam para o bucket
+            contagem = 0
+            for k, v in self.dicionario.items():
+                if v == bucket:
+                    contagem += 1
+            if contagem == 1:
+                ## nao tem como dividir, temos que criar novo indice
+                self.dicionario = self.ampliadict()  ## Ampliar 1 bit no dictionary
+                ## Vamos chamar recursivamente a inclusão novamente
+                self.setitem(chave, num)
+            else:
+                ## Mais e um índice aponte para o bucket, vamos dividir o bucket
+                for k, v in self.dicionario.items():
+                    if v == bucket:
+                        self.dicionario[k] = self._Bucket(self._tambucket)
+                ## Inserir novamente o bucket inteiro
+                for item in bucket._tabela:
+                    self.setitem(item._chave, item._valor)
+                ## Inserir o elemento novo afinal
+                self.setitem(chave, num)
         else:
             return True
+
 
 if __name__ == '__main__':
 
@@ -134,12 +157,12 @@ if __name__ == '__main__':
 
     print("Incluindo alguns elementos")
     print("=========================")
-    for i in range(1, 9):
+    for i in range(1, 21):
         myHashTable.setitem(i, randint(1, 1000))
         myHashTable.print()
 
-    print("Excluindo alguns elementos")
-    print("=========================")
-    for i in range(1, 10, 3):
-        myHashTable.delitem(i)
-        myHashTable.print()
+        # print("Excluindo alguns elementos")
+        # print("=========================")
+        # for i in range(1, 10, 3):
+        #     myHashTable.delitem(i)
+        #     myHashTable.print()
