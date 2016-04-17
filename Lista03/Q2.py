@@ -5,7 +5,7 @@ class HashTable:
         def __init__(self, tamanho=20):
             self._tabela = tamanho * [None]
 
-    def __init__(self, tamanho=20):
+    def __init__(self, tamgeral=20, tambucket=10):
         ## Atributos da função de hash
         self._primo = 109345121
         self._a = 1 + randrange(self._primo - 1)
@@ -14,10 +14,10 @@ class HashTable:
         self._b = 554755
 
         # Tamanho total do Hash
-        self.tamanho = tamanho
+        self.tamanho = tamgeral
 
         ## Indice
-        self.dicionario = {0: self._Bucket(), 1: self._Bucket()}
+        self.dicionario = {0: self._Bucket(tambucket), 1: self._Bucket(tambucket)}
 
         ## Número de bits de indexação
         self.profundidade = 1
@@ -58,9 +58,10 @@ class HashTable:
 if __name__ == '__main__':
 
     n = int(input("Entre com o número de chaves: "))
+    b = int(input("Entre com o tamanho de cada bucket: "))
 
     # A Hash terá a metade do numero de chaves
-    myHashTable = HashTable(int(n))
+    myHashTable = HashTable(int(n), int(b))
 
     print("Incluindo alguns elementos")
     print("=========================")
