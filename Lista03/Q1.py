@@ -11,6 +11,9 @@ class HashTable:
         self._b = 554755
         self.colisoes = 0
 
+    def libera(self):
+        self._tabela = None
+
     class _Elemento:
         def __init__(self, chave, num):
             self._chave = chave
@@ -136,3 +139,10 @@ if __name__ == '__main__':
     for i in range (1,n,2):
         retorno = myHashTable.remitem(i)
     myHashTable._printHash()
+
+    print("=========================")
+    print("Liberando a memória")
+    print("=========================")
+    myHashTable.libera()
+
+    del myHashTable

@@ -20,6 +20,9 @@ class HashTable:
         ## Indice
         self.dicionario = {0: self._Bucket(tambucket), 1: self._Bucket(tambucket)}
 
+    def libera(self):
+        self.dicionario = None
+
     def profundidade(self):
         tamdict = len(self.dicionario)
         numbitdict = (tamdict - 1).bit_length()
@@ -70,7 +73,7 @@ class HashTable:
         kkjj = kkj
         achou = True
         final = False
-        while (bucket._tabela[kkjj] == None or bucket._tabela[kkjj]._chave != k) and not final:
+        while not final and (bucket._tabela[kkjj] == None or bucket._tabela[kkjj]._chave != k):
             kkjj += 1
             if kkjj == self._tambucket:
                 kkjj = 0
@@ -81,20 +84,38 @@ class HashTable:
                         achou = False
                         final = True
                         break
-                    else:
-                        ## Achou
-                        bucket._tabela[kkjj] = None
-                        achou = True
-                        final = True
-                        break
         if achou:
             bucket._tabela[kkjj] = None
             return True
         else:
             return False
 
-    def setitem(self, chave, num):
+    def getitem(self, k):
+        kj = self._funcao_hash(k)  # hash
+        d = self.profundidade()  # profundidade em bits
+        r = kj & pow(2, d) - 1  # reduzindo a chave ao numero bits da profundidade
+        bucket = self.dicionario[r]  # encontrar o ponteiro pro bucket
+        kkj = kj >> d  # retiro os bits de indexação para usar o restante para fazer hash no bucket
+        kkjj = kkj
+        achou = True
+        final = False
+        while not final and (bucket._tabela[kkjj] == None or bucket._tabela[kkjj]._chave != k):
+            kkjj += 1
+            if kkjj == self._tambucket:
+                kkjj = 0
+                while bucket._tabela[kkjj] == None or bucket._tabela[kkjj]._chave != k:
+                    kkjj += 1
+                    if kkjj == kkj or kkjj == self._tambucket:
+                        ## Não achou nada
+                        achou = False
+                        final = True
+                        break
+        if achou:
+            return bucket._tabela[kkjj]._valor
+        else:
+            return None
 
+    def setitem(self, chave, num):
         kj = self._funcao_hash(chave)  # hash
         d = self.profundidade()  # profundidade em bits
         r = kj & pow(2, d) - 1  # reduzindo a chave ao numero bits da profundidade
@@ -157,12 +178,27 @@ if __name__ == '__main__':
 
     print("Incluindo alguns elementos")
     print("=========================")
-    for i in range(1, 21):
+    for i in range(1, 10):
         myHashTable.setitem(i, randint(1, 1000))
         myHashTable.print()
 
-        # print("Excluindo alguns elementos")
-        # print("=========================")
-        # for i in range(1, 10, 3):
-        #     myHashTable.delitem(i)
-        #     myHashTable.print()
+    print("Excluindo alguns elementos")
+    print("=========================")
+    for i in range(1, 10, 3):
+        myHashTable.delitem(i)
+        myHashTable.print()
+
+    print("=========================")
+    print("Buscando alguns elementos")
+    print("=========================")
+    for i in range(1, 11):
+        retorno = myHashTable.getitem(i)
+        if retorno != None:
+            print(str(i) + "-" + str(retorno))
+
+    print("=========================")
+    print("Liberando a memória")
+    print("=========================")
+    myHashTable.libera()
+
+    del myHashTable
