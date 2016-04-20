@@ -2,7 +2,9 @@ from random import *
 
 
 class Heap():
-    class _Elemento:
+
+    ## Classe dos itens que ficarão no Heap
+    class Elemento:
 
         def __init__(self, chave, valor, indice):
             self._chave = chave
@@ -15,12 +17,15 @@ class Heap():
     def vazio(self):
         return len(self._dados) == 0
 
+    ## Partindo de uma posição j retorna a posição do pai de j
     def _pai(self, j):
         return (j - 1) // 2
 
+    ## Partindo de uma posição j retorna a posição do filho à esquerda de j
     def _esquerda(self, j):
         return 2 * j + 1
 
+    ## Partindo de uma posição j retorna a posição do filho à direita de j
     def _direita(self, j):
         return 2 * j + 2
 
@@ -28,7 +33,7 @@ class Heap():
         return len(self._dados)
 
     def add(self, chave, valor):
-        elemento = self._Elemento(chave, valor, len(self._dados))
+        elemento = self.Elemento(chave, valor, len(self._dados))
         self._dados.append(elemento)
         self._sobeheap(len(self._dados) - 1)
         return elemento
@@ -52,7 +57,7 @@ class Heap():
 
     def printHeap(self):
         for i in self._dados:
-            print(i._chave, i._valor)
+            print(i._chave, i._valor, i._indice)
 
     def _baixaheap(self, j):
         if self._temesquerda(j):  # se não existe elemento à esquerda, não precisa fazer nada
@@ -85,18 +90,58 @@ class Heap():
             self._baixaheap(0)
             return (retorno._chave, retorno._valor)
 
+    def recupera_linear(self, chave):
+        for i in self._dados:
+            if i._chave == chave:
+                return i
+        return None
+
+    def remove(self, elemento):
+        indice = elemento._indice
+        if indice == self.tamanho()-1: # se for o último, deleta
+            self._dados.pop()
+        else: # não é o último
+            self._troca(indice, self.tamanho()-1)  ## poe ele pro final
+            self._dados.pop() ## remove o cara
+            self._ajusta(indice)
+        return (elemento._chave, elemento._valor)
+
+    def libera(self):
+        self._dados = None
 
 if __name__ == '__main__':
     myHeap = Heap()
     myHeap.printHeap()
 
     ## Inserindo itens
-    for i in range(6, 0, -1):
-        myHeap.add(i, randint(1, 100))
+    print("Inserindo elementos")
+    print("-------------------")
+    for i in range(10, 0, -1):
+        myHeap.add(randint(1,100), randint(1, 100))
         myHeap.printHeap()
         print("------------------")
     ## Removendo pela cabeça
-    for i in range(6):
+    print("Removendo elementos pela cabeça")
+    print("-------------------")
+    for i in range(1):
         myHeap.remove_minimo()
         myHeap.printHeap()
         print("------------------")
+    print("Recuperando alguns elementos pela Chave")
+    for i in range(50):
+        e = myHeap.recupera_linear(i)
+        if e != None:
+            print(e._chave, e._valor)
+    ## Incluindo e removendo itens aleatoriamente
+    print("Inserindo,recuperando e removendo elementos")
+    print("-------------------------------")
+    for i in range(3):
+        elemento = myHeap.add(randint(1,100), randint(1,100))
+        print("Inserindo Elemento: "+str(elemento._chave))
+        myHeap.printHeap()
+        print("------------------")
+        print("Removendo Elemento: " + str(elemento._chave))
+        myHeap.remove(elemento)
+        myHeap.printHeap()
+        print("------------------")
+
