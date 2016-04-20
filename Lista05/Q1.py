@@ -9,9 +9,6 @@ class Heap():
             self._valor = valor
             self._indice = indice
 
-        def menor(self, outro):
-            return self._chave < outro._chave
-
     def __init__(self):
         self._dados = []
 
