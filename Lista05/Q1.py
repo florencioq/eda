@@ -1,37 +1,40 @@
 from random import *
 
-class Heap():
 
+class Heap():
     class _Elemento:
 
-        def __init__(self, chave, valor):
+        def __init__(self, chave, valor, indice):
             self._chave = chave
             self._valor = valor
+            self._indice = indice
 
         def menor(self, outro):
             return self._chave < outro._chave
 
-    def vazio(self):
-        return len(self._dados) == 0
-
     def __init__(self):
         self._dados = []
 
+    def vazio(self):
+        return len(self._dados) == 0
+
     def _pai(self, j):
-        return (j-1) // 2
+        return (j - 1) // 2
 
     def _esquerda(self, j):
-        return 2*j +1
+        return 2 * j + 1
 
     def _direita(self, j):
-        return 2*j+2
+        return 2 * j + 2
 
     def tamanho(self):
         return len(self._dados)
 
     def add(self, chave, valor):
-        self._dados.append(self._Elemento(chave, valor))
-        self._sobeheap(len(self._dados)-1)
+        elemento = self._Elemento(chave, valor, len(self._dados))
+        self._dados.append(elemento)
+        self._sobeheap(len(self._dados) - 1)
+        return elemento
 
     def _sobeheap(self, j):
         pai = self._pai(j)
@@ -41,13 +44,21 @@ class Heap():
 
     def _troca(self, i, j):
         self._dados[i], self._dados[j] = self._dados[j], self._dados[i]
+        self._dados[i]._indice = i
+        self._dados[j]._indice = j
+
+    def _ajusta(self, j):
+        if j > 0 and self._dados[j]._chave < self._dados[self._pai(j)]._chave:
+            self._sobeheap(j)
+        else:
+            self._baixaheap(j)
 
     def printHeap(self):
         for i in self._dados:
             print(i._chave, i._valor)
 
     def _baixaheap(self, j):
-        if self._temesquerda(j): # se não existe elemento à esquerda, não precisa fazer nada
+        if self._temesquerda(j):  # se não existe elemento à esquerda, não precisa fazer nada
             esquerda = self._esquerda(j)
             menor = esquerda
             if self._temdireita(j):
@@ -72,18 +83,19 @@ class Heap():
         if self.vazio():
             return False
         else:
-            self._troca(0, len(self._dados)-1)
+            self._troca(0, len(self._dados) - 1)
             retorno = self._dados.pop()
             self._baixaheap(0)
             return (retorno._chave, retorno._valor)
+
 
 if __name__ == '__main__':
     myHeap = Heap()
     myHeap.printHeap()
 
     ## Inserindo itens
-    for i in range(6,0,-1):
-        myHeap.add(i,randint(1,100))
+    for i in range(6, 0, -1):
+        myHeap.add(i, randint(1, 100))
         myHeap.printHeap()
         print("------------------")
     ## Removendo pela cabeça
@@ -91,4 +103,3 @@ if __name__ == '__main__':
         myHeap.remove_minimo()
         myHeap.printHeap()
         print("------------------")
-
