@@ -56,6 +56,12 @@ class Set():
         else:
             raise ("Universos diferentes")
 
+    def diferenca(self, conjunto):
+        ## So tem sentido se os universos forem os mesmos
+        if self._letras == conjunto._letras:
+            self._bits = self._bits - (self._bits & conjunto._bits)
+        else:
+            raise ("Universos diferentes")
 
     def delElementos(self, conjunto):
         numeros = 0
@@ -118,4 +124,17 @@ if __name__ == '__main__':
     mySet2.printConjunto()
     mySet1.intersecao(mySet2)
     print("Resultado")
+    mySet1.printConjunto()
+
+    print("=============================================")
+
+    print("Diferença de conjuntos")
+    print("-----------------------")
+    mySet1.addElementos('florencio')
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Conjunto 2")
+    mySet2.printConjunto()
+    print("Conjunto 1 - Conjunto 2 =")
+    mySet1.diferenca(mySet2)
     mySet1.printConjunto()
