@@ -135,6 +135,10 @@ class Set():
                 numeros = pow(2, posicao)
                 self._bits = self._bits | int(numeros)
 
+    def libera(self):
+        self._bits = None
+        self._letras = None
+
 if __name__ == '__main__':
     print("Criando o conjunto")
     mySet1 = Set()
@@ -249,3 +253,9 @@ if __name__ == '__main__':
     mySet1.printConjunto()
     print("Número de elementos do conjunto:")
     print(mySet1.tamanho())
+    print("=============================================")
+    print("Liberando a memória")
+    mySet1.libera()
+    mySet2.libera()
+    del mySet1
+    del mySet2
