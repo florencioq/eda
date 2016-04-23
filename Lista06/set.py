@@ -14,6 +14,9 @@ class Set():
         self._letras = ''
         self._bits = 0
 
+    def tamanho(self):
+        return len(self._bit2letras())
+
     ## Converte numero em letras
     def _bit2letras(self):
         letras = []
@@ -23,9 +26,9 @@ class Set():
         return letras
 
     ## Adiciona um elemento ao conjunto
-    def add(self, caractere):
-        self._bits = caractere
-        self._bit2letras()
+    # def add(self, caractere):
+    #     self._bits = caractere
+    #     self._bit2letras()
 
     ## Printa o conjunto
     def printConjunto(self):
@@ -83,7 +86,7 @@ class Set():
         else:
             raise ("Universos diferentes")
 
-    def fazparte(self, conjunto):
+    def pertence(self, conjunto):
         numeros = 0
         conjunto = ''.join(set(conjunto))  # retira os repetidos
         for letra in conjunto:
@@ -234,6 +237,15 @@ if __name__ == '__main__':
     print("Conjunto 1")
     mySet1.printConjunto()
     print("Elemento 'a' faz parte de Conjunto 1?")
-    print(mySet1.fazparte('a'))
+    print(mySet1.pertence('a'))
     print("Elemento 'b' faz parte de Conjunto 1?")
-    print(mySet1.fazparte('b'))
+    print(mySet1.pertence('b'))
+    print("=============================================")
+    print("Verificar o número de elementos de um conjunto")
+    print("-----------------------")
+    mySet1.setUniverso('qazwsxedc')
+    mySet1.setElementos('qsxedc')
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Número de elementos do conjunto:")
+    print(mySet1.tamanho())
