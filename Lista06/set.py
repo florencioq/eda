@@ -83,6 +83,20 @@ class Set():
         else:
             raise ("Universos diferentes")
 
+    def fazparte(self, conjunto):
+        numeros = 0
+        conjunto = ''.join(set(conjunto))  # retira os repetidos
+        for letra in conjunto:
+            posicao = self._letras.find(letra)
+            if posicao != -1:  # existe no universo
+                numeros = numeros | int(pow(2, posicao))
+            else:
+                return False
+        if self._bits & int(numeros) == int(numeros):
+            return True
+        else:
+            return False
+
     def delElementos(self, conjunto):
         numeros = 0
         for letra in conjunto:
@@ -212,3 +226,14 @@ if __name__ == '__main__':
     mySet1.printConjunto()
     print("Print complemento de Conjunto 1")
     print(mySet1.complemento())
+    print("=============================================")
+    print("Verificar se um elemento pertence a um conjunto")
+    print("-----------------------")
+    mySet1.setUniverso('qazwsxedc')
+    mySet1.setElementos('qazwsxedc')
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Elemento 'a' faz parte de Conjunto 1?")
+    print(mySet1.fazparte('a'))
+    print("Elemento 'b' faz parte de Conjunto 1?")
+    print(mySet1.fazparte('b'))
