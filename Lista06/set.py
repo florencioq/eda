@@ -1,4 +1,5 @@
 from math import *
+from string import *
 
 ## There's a trick for just getting the 1's out of the binary representation without having to iterate over all the intervening 0's:
 ## http://stackoverflow.com/questions/8898807/pythonic-way-to-iterate-over-bits-of-integer
@@ -10,14 +11,15 @@ def bits(n):
 
 class Set():
     def __init__(self):
-        self._letras = 'abcdefgh'
+        self._letras = ''
         self._bits = 0
 
     ## Converte numero em letras
     def _bit2letras(self):
         letras = []
         for b in bits(self._bits):
-            letras.append(self._letras[int(log(b, 2))])
+            logb = int(log(b, 2))
+            letras.append(self._letras[logb])
         return letras
 
     ## Adiciona um elemento ao conjunto
@@ -26,12 +28,35 @@ class Set():
         self._bit2letras()
 
     ## Printa o conjunto
-    def print(self):
+    def printConjunto(self):
         print(self._bit2letras())
+
+    def printUniverso(self):
+        print('Universo: ' + self._letras)
+
+    def getUniverso(self):
+        return self._letras
 
     ## Seta o Universo dos conjunto
     def setUniverso(self, universo):
-        self._letras = universo
+        universo = ''.join(set(universo))  ## remove duplicados
+        self._letras = ''.join(sorted(universo))  ## ordena
+
+    def uniao(self, conjunto):
+        ## So tem sentido se os universos forem os mesmos
+        if self._letras == conjunto._letras:
+            self._bits = self._bits | conjunto._bits
+        else:
+            raise ("Universos diferentes")
+
+    def delElementos(self, conjunto):
+        numeros = 0
+        for letra in conjunto:
+            posicao = self._letras.find(letra)
+            if posicao != -1:
+                numeros = int(pow(2, posicao))
+                numeros = ~numeros
+                self._bits = self._bits & int(numeros)
 
     ## Seta o conjunto de dados
     def addElementos(self, conjunto):
@@ -39,15 +64,23 @@ class Set():
         for letra in conjunto:
             posicao = self._letras.find(letra)
             if posicao != -1:
-                numeros += pow(2, posicao)
-        self._bits = self._bits | int(numeros)
+                numeros = pow(2, posicao)
+                self._bits = self._bits | int(numeros)
 
 if __name__ == '__main__':
-    mySet = Set()
-    mySet.setUniverso('abcedfgh')
-    mySet.addElementos('c')
-    mySet.print()
-    mySet.addElementos('f')
-    mySet.print()
-    mySet.addElementos('h')
-    mySet.print()
+    mySet1 = Set()
+    mySet1.setUniverso(printable)
+    mySet1.printUniverso()
+    mySet1.addElementos('jose florencio')
+    mySet1.printConjunto()
+
+    mySet2 = Set()
+    mySet2.setUniverso(mySet1.getUniverso())
+    mySet2.addElementos('de queiroz neto')
+    mySet2.printConjunto()
+
+    mySet1.uniao(mySet2)
+    mySet1.printConjunto()
+
+    mySet1.delElementos('queiroz')
+    mySet1.printConjunto()
