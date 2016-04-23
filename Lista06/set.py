@@ -49,6 +49,14 @@ class Set():
         else:
             raise ("Universos diferentes")
 
+    def intersecao(self, conjunto):
+        ## So tem sentido se os universos forem os mesmos
+        if self._letras == conjunto._letras:
+            self._bits = self._bits & conjunto._bits
+        else:
+            raise ("Universos diferentes")
+
+
     def delElementos(self, conjunto):
         numeros = 0
         for letra in conjunto:
@@ -68,19 +76,46 @@ class Set():
                 self._bits = self._bits | int(numeros)
 
 if __name__ == '__main__':
+    print("Criando o conjunto")
     mySet1 = Set()
+    print("Seu universo será tudo o que for printável; pode ser outro se quizer")
     mySet1.setUniverso(printable)
+    print("Printando o Universo")
     mySet1.printUniverso()
+    print("Acrescentando alguns elementos: jose florencio")
     mySet1.addElementos('jose florencio')
     mySet1.printConjunto()
-
     mySet2 = Set()
     mySet2.setUniverso(mySet1.getUniverso())
     mySet2.addElementos('de queiroz neto')
+    print("=============================================")
+    print("União de conjuntos")
+    print("--------------------")
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Conjunto 2")
     mySet2.printConjunto()
-
+    print("Resultado")
     mySet1.uniao(mySet2)
     mySet1.printConjunto()
+    print("=============================================")
 
+    print("Remoção de elementos")
+    print("--------------------")
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Removendo: queiroz")
     mySet1.delElementos('queiroz')
+    print("Resultado")
+    mySet1.printConjunto()
+    print("=============================================")
+
+    print("Interseção de conjuntos")
+    print("-----------------------")
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Conjunto 2")
+    mySet2.printConjunto()
+    mySet1.intersecao(mySet2)
+    print("Resultado")
     mySet1.printConjunto()
