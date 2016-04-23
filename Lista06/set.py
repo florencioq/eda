@@ -63,6 +63,16 @@ class Set():
         else:
             raise ("Universos diferentes")
 
+    def subconjunto(self, conjunto):
+        ## So tem sentido se os universos forem os mesmos
+        if self._letras == conjunto._letras:
+            if self._bits & conjunto._bits == conjunto._bits:
+                return True
+            else:
+                return False
+        else:
+            raise ("Universos diferentes")
+
     def delElementos(self, conjunto):
         numeros = 0
         for letra in conjunto:
@@ -105,7 +115,6 @@ if __name__ == '__main__':
     mySet1.uniao(mySet2)
     mySet1.printConjunto()
     print("=============================================")
-
     print("Remoção de elementos")
     print("--------------------")
     print("Conjunto 1")
@@ -115,7 +124,6 @@ if __name__ == '__main__':
     print("Resultado")
     mySet1.printConjunto()
     print("=============================================")
-
     print("Interseção de conjuntos")
     print("-----------------------")
     print("Conjunto 1")
@@ -125,9 +133,7 @@ if __name__ == '__main__':
     mySet1.intersecao(mySet2)
     print("Resultado")
     mySet1.printConjunto()
-
     print("=============================================")
-
     print("Diferença de conjuntos")
     print("-----------------------")
     mySet1.addElementos('florencio')
@@ -138,3 +144,19 @@ if __name__ == '__main__':
     print("Conjunto 1 - Conjunto 2 =")
     mySet1.diferenca(mySet2)
     mySet1.printConjunto()
+    print("=============================================")
+    print("Verificar se é subconjunto")
+    print("-----------------------")
+    mySet1.addElementos('florencio')
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Conjunto 2")
+    mySet2.printConjunto()
+    print("Conjunto 2 é subconjunto de Conjunto 1?")
+    print(mySet1.subconjunto(mySet2))
+    mySet2.delElementos('florencio de queiroz neto')
+    mySet2.addElementos('rencio')
+    print("Conjunto 2")
+    mySet2.printConjunto()
+    print("Conjunto 2 é subconjunto de Conjunto 1?")
+    print(mySet1.subconjunto(mySet2))
