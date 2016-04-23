@@ -49,6 +49,16 @@ class Set():
         else:
             raise ("Universos diferentes")
 
+    def igual(self, conjunto):
+        ## So tem sentido se os universos forem os mesmos
+        if self._letras == conjunto._letras:
+            if self._bits == conjunto._bits:
+                return True
+            else:
+                return False
+        else:
+            raise ("Universos diferentes")
+
     def intersecao(self, conjunto):
         ## So tem sentido se os universos forem os mesmos
         if self._letras == conjunto._letras:
@@ -81,6 +91,15 @@ class Set():
                 numeros = int(pow(2, posicao))
                 numeros = ~numeros
                 self._bits = self._bits & int(numeros)
+
+    def setElementos(self, conjunto):
+        numeros = 0
+        self._bits = 0  # limpa
+        for letra in conjunto:
+            posicao = self._letras.find(letra)
+            if posicao != -1:
+                numeros = pow(2, posicao)
+                self._bits = self._bits | int(numeros)
 
     ## Seta o conjunto de dados
     def addElementos(self, conjunto):
@@ -160,3 +179,18 @@ if __name__ == '__main__':
     mySet2.printConjunto()
     print("Conjunto 2 é subconjunto de Conjunto 1?")
     print(mySet1.subconjunto(mySet2))
+    print("=============================================")
+    print("Verificar igualdade de conjuntos")
+    print("-----------------------")
+    mySet1.addElementos('florencio')
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Conjunto 2")
+    mySet2.printConjunto()
+    print("Conjunto 1 é igual ao Conjunto 2?")
+    print(mySet1.igual(mySet2))
+    mySet2.setElementos('florencio')
+    print("Conjunto 2")
+    mySet2.printConjunto()
+    print("Conjunto 1 é igual ao Conjunto 2?")
+    print(mySet1.igual(mySet2))
