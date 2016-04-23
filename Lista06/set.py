@@ -101,6 +101,14 @@ class Set():
                 numeros = pow(2, posicao)
                 self._bits = self._bits | int(numeros)
 
+    def complemento(self):
+        univ = Set()
+        univ.setUniverso(self.getUniverso())
+        univ.setElementos(self.getUniverso())
+        univ.diferenca(self)
+        letras = univ._bit2letras()
+        return letras
+
     ## Seta o conjunto de dados
     def addElementos(self, conjunto):
         numeros = 0
@@ -194,3 +202,13 @@ if __name__ == '__main__':
     mySet2.printConjunto()
     print("Conjunto 1 é igual ao Conjunto 2?")
     print(mySet1.igual(mySet2))
+    print("=============================================")
+    print("Gerar o complemento de um conjunto")
+    print("-----------------------")
+    mySet1.setUniverso('abcdefgh')
+    mySet1.printUniverso()
+    mySet1.setElementos('qazwsxedc')
+    print("Conjunto 1")
+    mySet1.printConjunto()
+    print("Print complemento de Conjunto 1")
+    print(mySet1.complemento())
