@@ -17,6 +17,8 @@ def hash(palavra, tam, a, b, primo):
         valor = ord(letra)
         total = total + idx * valor
     return (total * a + b) % primo % tam
+
+
 primo = 109345121
 a = 76567576  ## primo > aleatorio > 0
 b = 54564656  ## primo > aleatorio > 0
